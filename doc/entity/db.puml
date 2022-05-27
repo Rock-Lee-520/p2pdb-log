@@ -1,0 +1,20 @@
+@startuml
+class p2pdb_log <<Entity>> {
+    - cid  //hash address
+    - p_cid   //parent cid
+    - created_time   //
+    - updated_time //
+}
+
+class p2pdb_log_event <<Entity>> {
+    - event_id     //id
+    - cid   //parent envent id 
+    - content // 事件内容
+    - created_time   //
+    - updated_time //
+}
+
+p2pdb_log --> p2pdb_log_event
+@enduml
+
+

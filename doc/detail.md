@@ -76,3 +76,8 @@ serviceA -> serviceB : return  all of different cid {n}
 如论文所说，当一个pcid 出现两个相同的cid， merkle-dag 无法说出谁先谁后, p2pdb-log不会直接做排序，而是把对应的排序交由上层的consistency模块实现，具体参考consistency模块
 
 
+### 具体实现的内容
+1、对ipfs merkle-dag 做了一层封装
+2、提供一些基本的接口供上层的一致性模块调用
+
+

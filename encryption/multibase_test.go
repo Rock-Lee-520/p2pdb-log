@@ -1,4 +1,4 @@
-package multibase
+package encryption
 
 import (
 	"bytes"
@@ -33,7 +33,7 @@ var encodedSamples = map[multi.Encoding]string{
 }
 
 func testEncode(t *testing.T, encoding multi.Encoding, bytes []byte, expected string) {
-	actual, err := Encode(encoding, bytes)
+	actual, err := BaseEncode(encoding, bytes)
 	if err != nil {
 		t.Error(err)
 		return
@@ -44,7 +44,7 @@ func testEncode(t *testing.T, encoding multi.Encoding, bytes []byte, expected st
 }
 
 func testDecode(t *testing.T, expectedEncoding multi.Encoding, expectedBytes []byte, data string) {
-	actualEncoding, actualBytes, err := Decode(data)
+	actualEncoding, actualBytes, err := BaseDecode(data)
 	if err != nil {
 		t.Error(err)
 		return
@@ -57,23 +57,23 @@ func testDecode(t *testing.T, expectedEncoding multi.Encoding, expectedBytes []b
 	}
 }
 
-func TestEncode(t *testing.T) {
+func TestBaseEncode(t *testing.T) {
 	for encoding := range multi.EncodingToStr {
 		testEncode(t, encoding, sampleBytes, encodedSamples[encoding])
 	}
 }
 
-func TestDecode(t *testing.T) {
+func TestBaseDecode(t *testing.T) {
 	for encoding := range multi.EncodingToStr {
 		testDecode(t, encoding, sampleBytes, encodedSamples[encoding])
 	}
 }
 
-func TestEnCodeAndDecode(t *testing.T) {
+func TestBaseEnCodeAndBaseDecode(t *testing.T) {
 	var str = "Decentralize everything!!!"
 	var Bytes = []byte(str)
 	expected := "birswgzloorzgc3djpjssazlwmvzhs5dinfxgoijbee"
-	actual, err := Encode(98, Bytes)
+	actual, err := BaseEncode(98, Bytes)
 	if err != nil {
 		t.Error(err)
 		return
@@ -84,7 +84,7 @@ func TestEnCodeAndDecode(t *testing.T) {
 		t.Errorf("encoding failed for %c (%d / %s), expected: %s, got: %s", 98, 98, multi.EncodingToStr[98], expected, actual)
 	}
 	var result []byte
-	encoding, result, err := Decode(expected)
+	encoding, result, err := BaseDecode(expected)
 	if err != nil {
 		t.Error(err)
 		return

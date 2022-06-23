@@ -7,9 +7,9 @@ class Node <<Entity>> {
     - Type // 节点类型 默认log
     - LamportClock //兰伯特时钟
     - ReceiveTimestamp // 本机接收到事件时间
-    - ReceiveDate // 本机接收到事件时间
-    - SendDate //对等节点发送事件时间
-    - SendTimestamp //对等节点发送事件时间
+    - ReceivingDate // 本机接收到事件时间
+    - SendingDate //对等节点发送事件时间
+    - SendingTimestamp //对等节点发送事件时间
     - LastId //因果关系事件id(上一个关联事件id) 为空代表没有因果关系                 
 }
 
@@ -17,10 +17,10 @@ class Node <<Entity>> {
 class Object <<Entity>> {
     - ObjectId  // 对象ID  一个节点包含多个对象
     - Cid  //节点id
-    - createdTimestamp //本机创建时间戳
-    - createdDate //本机创建时间戳
-    - Operations //自定义操作信息
-    - Properties //自定义属性信息                 
+    - CreatedTimestamp //本机创建时间戳
+    - CreatedDate //本机创建时间戳
+    - Operation //自定义操作信息
+    - Propertie //自定义属性信息                 
 }
 
 class Link <<Entity>> {
@@ -28,7 +28,8 @@ class Link <<Entity>> {
     - LastCid  // 上一个节点CID
     - Cid //当前节点Cid
     - Size //数据大小
-    - createdTime //本机创建时间戳
+    - createdTimestamp //本机创建时间戳
+    - createdDate //本机创建时间戳
 }
 Node -->  Object -->  Link
 @enduml

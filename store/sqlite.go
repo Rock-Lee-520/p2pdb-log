@@ -34,6 +34,7 @@ func (db *SqliteDB) Update() error {
 func (db *SqliteDB) Delete() error {
 	return nil
 }
-func (db *SqliteDB) Select() error {
+func (db *SqliteDB) Select(query interface{}, args ...interface{}) {
+	db.OrmDB = db.OrmDB.Select(query, args)
 	return nil
 }

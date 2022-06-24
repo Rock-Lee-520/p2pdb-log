@@ -11,7 +11,7 @@ func TestDBFactory(t *testing.T) {
 	var db *CreateDBFactory
 	orm := db.InitDB()
 	var node = &Node{}
-	orm.Where("name = ?", "jinzhu").First(&node)
+	orm.Where("node_id = ?", "nodeid").First(&node)
 
 	debug.Dump(node)
 }

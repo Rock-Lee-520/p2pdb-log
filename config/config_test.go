@@ -3,9 +3,9 @@ package config_test
 import (
 	"testing"
 
+	"github.com/Rock-liyi/p2pdb-log/config"
 	debug "github.com/favframework/debug"
 	_ "github.com/joho/godotenv/autoload"
-	"github.com/kkguan/p2pdb-store/config"
 )
 
 func TestDatabase_Name(t *testing.T) {

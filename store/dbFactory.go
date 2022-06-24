@@ -6,6 +6,7 @@ import (
 
 	conf "github.com/Rock-liyi/p2pdb-log/config"
 	debug "github.com/favframework/debug"
+	"github.com/jinzhu/gorm"
 )
 
 type BaseInfo struct {
@@ -22,7 +23,10 @@ type DBconnect interface {
 	Create() error
 	Update() error
 	Delete() error
-	Select() error
+	Select(query interface{}, args ...interface{}) *gorm.DB
+	Where(query interface{}, args ...interface{}) *gorm.DB
+	First(out interface{}, where ...interface{}) *gorm.DB
+	Find(out interface{}, where ...interface{}) *gorm.DB
 	Connect()
 }
 
@@ -42,11 +46,18 @@ func (db *CreateDBFactory) CreateDBConnect(db_type string) DBconnect {
 
 func (db *CreateDBFactory) InitDB() DBconnect {
 	var connect = db.CreateDBConnect("sqlite")
-	name := "p2pdb_log"
 	//init config,get db path
 	dataPath := conf.GetDataPath()
 	if dataPath != "" {
 		dataPath = dataPath + "/"
+	}
+
+	//get db name
+	dataName := conf.GetDBName()
+	debug.Dump(dataName)
+
+	if dataName == "" {
+		panic("dbname does not exits in .env file")
 	}
 
 	binary, _ := os.Getwd()
@@ -54,8 +65,9 @@ func (db *CreateDBFactory) InitDB() DBconnect {
 	if root != "" && dataPath == "" {
 		dataPath = root + "/"
 	}
-	debug.Dump(dataPath + name + ".db")
-	address := dataPath + name + ".db"
+
+	address := dataPath + dataName + ".db"
+	debug.Dump(address)
 	connect.Init(address, 0, "", "")
 	connect.Connect()
 	return connect

@@ -7,8 +7,11 @@ import (
 )
 
 func TestDBFactory(t *testing.T) {
+
 	var db *CreateDBFactory
 	orm := db.InitDB()
+	var node = &Node{}
+	orm.Where("name = ?", "jinzhu").First(&node)
 
-	debug.Dump(orm.Select())
+	debug.Dump(node)
 }

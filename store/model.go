@@ -39,6 +39,6 @@ type Link struct {
 	LastCid          string    `gorm:"column:last_cid"`
 	Cid              string    `gorm:"column:cid"`
 	Size             string    `gorm:"column:size"`
-	createdTimestamp time.Time `gorm:"column:created_timestamp"`
-	createdDate      string    `gorm:"column:created_date"`
+	CreatedTimestamp time.Time `gorm:"column:created_timestamp"`
+	CreatedDate      string    `gorm:"column:created_date"`
 }

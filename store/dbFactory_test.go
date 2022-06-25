@@ -15,3 +15,13 @@ func TestDBFactory(t *testing.T) {
 
 	debug.Dump(node)
 }
+
+func TestDBSelect(t *testing.T) {
+
+	var db *CreateDBFactory
+	orm := db.InitDB()
+	var node = &Node{}
+	orm.Where("node_id = ?", "nodeid").Select(&node)
+
+	debug.Dump(node)
+}

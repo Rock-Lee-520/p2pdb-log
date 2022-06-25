@@ -2,15 +2,13 @@ package core
 
 import (
 	"github.com/Rock-liyi/p2pdb-log/store"
-	debug "github.com/favframework/debug"
 )
 
 var DB *store.CreateDBFactory
-var orm store.DBconnect
 
 type Node interface {
 	InsertNode(node_id string, node_type string, lamport_clock int64, receiving_timestamp int32,
-		receiving_date string, sending_date string, send_timestamp int32, last_id string) (int, error)
+		receiving_date string, sending_date string, sending_timestamp int32, last_node_id string) (bool, error)
 	FindNode()
 	DeleteNode()
 	UpdateNode()
@@ -28,28 +26,18 @@ type Node interface {
 type NodeFactory struct {
 }
 
-func init() {
-	orm = DB.InitDB()
-	debug.Dump("call init function=====")
-}
-
-// func (nodeFactory *NodeFactory) init() {
-
-// 	nodeFactory.init()
-// }
-
-func (node *NodeFactory) InsertNode(node_id string, node_type string, lamport_clock int64, receiving_timestamp int32,
-	receiving_date string, sending_date string, send_timestamp int32, last_id string) (bool, error) {
+func (node *NodeFactory) InsertNode(nodeId string, nodeType string, lamportClock int64, receivingTimestamp int32,
+	receivingDate string, sendingDate string, sendingTimestamp int32, lastNodeId string) (bool, error) {
 	var nodeModel = &store.Node{}
-	nodeModel.NodeId = node_id
-	nodeModel.NodeType = node_type
-	nodeModel.LamportClock = lamport_clock
-	nodeModel.ReceivingTimestamp = receiving_timestamp
-	nodeModel.ReceivingDate = receiving_date
-	nodeModel.SendingDate = sending_date
-	nodeModel.SendingTimestamp = send_timestamp
-	nodeModel.LastId = last_id
-
+	nodeModel.NodeId = nodeId
+	nodeModel.NodeType = nodeType
+	nodeModel.LamportClock = lamportClock
+	nodeModel.ReceivingTimestamp = receivingTimestamp
+	nodeModel.ReceivingDate = receivingDate
+	nodeModel.SendingDate = sendingDate
+	nodeModel.SendingTimestamp = sendingTimestamp
+	nodeModel.LastNodeId = lastNodeId
+	orm := DB.InitDB()
 	err := orm.Create(&nodeModel)
 	if err.Error != nil {
 		return false, err.Error

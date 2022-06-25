@@ -70,6 +70,7 @@ func (db *CreateDBFactory) InitDB() DBconnect {
 	debug.Dump(address)
 	connect.Init(address, 0, "", "")
 	connect.Connect()
+
 	return connect
 
 }

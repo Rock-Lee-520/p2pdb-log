@@ -23,10 +23,10 @@ func TestDBSelect(t *testing.T) {
 	receivingDate := "2021"
 	sendingDate := "2021"
 	sendingTimestamp := 123
-	lastId := cid.String()
+	lastNodeId := cid.String()
 
 	ok, err := node.InsertNode(nodeId, nodeType, int64(lamportClock), int32(receivingTimestamp),
-		receivingDate, sendingDate, int32(sendingTimestamp), lastId)
+		receivingDate, sendingDate, int32(sendingTimestamp), lastNodeId)
 	if err != nil {
 		debug.Dump(err.Error())
 	}

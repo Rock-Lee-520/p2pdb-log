@@ -39,7 +39,7 @@ func init() {
 // }
 
 func (node *NodeFactory) InsertNode(node_id string, node_type string, lamport_clock int64, receiving_timestamp int32,
-	receiving_date string, sending_date string, send_timestamp int32, last_id string) (int, error) {
+	receiving_date string, sending_date string, send_timestamp int32, last_id string) (bool, error) {
 	var nodeModel = &store.Node{}
 	nodeModel.NodeId = node_id
 	nodeModel.NodeType = node_type
@@ -50,6 +50,9 @@ func (node *NodeFactory) InsertNode(node_id string, node_type string, lamport_cl
 	nodeModel.SendingTimestamp = send_timestamp
 	nodeModel.LastId = last_id
 
-	var result = orm.Create(&nodeModel)
-	return 0, nil
+	err := orm.Create(&nodeModel)
+	if err.Error != nil {
+		return false, err.Error
+	}
+	return true, nil
 }

@@ -20,7 +20,7 @@ type BaseInfo struct {
 
 type DBconnect interface {
 	Init(address string, port int64, account string, passwd string)
-	Create() error
+	Create(value interface{}) *gorm.DB
 	Update() error
 	Delete() error
 	Select(query interface{}, args ...interface{}) *gorm.DB

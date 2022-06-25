@@ -14,20 +14,20 @@ type Model struct {
 
 // Node model definition
 type Node struct {
-	NodeId             string    `gorm:"column:node_id"`
-	Type               string    `gorm:"column:type"`
-	LamportClock       string    `gorm:"column:lamport_clock"`
-	ReceivingTimestamp time.Time `gorm:"column:receiving_timestamp"`
-	ReceivingDate      string    `gorm:"column:receiving_date"`
-	SendingDate        string    `gorm:"column:sending_date"`
-	SendingTimestamp   time.Time `gorm:"column:sending_timestamp"`
-	LastId             string    `gorm:"column:last_id"`
+	NodeId             string `gorm:"column:node_id"`
+	NodeType           string `gorm:"column:node_type"`
+	LamportClock       int64  `gorm:"column:lamport_clock"`
+	ReceivingTimestamp int32  `gorm:"column:receiving_timestamp"`
+	ReceivingDate      string `gorm:"column:receiving_date"`
+	SendingDate        string `gorm:"column:sending_date"`
+	SendingTimestamp   int32  `gorm:"column:sending_timestamp"`
+	LastId             string `gorm:"column:last_id"`
 }
 
 //  Object model definition
 type Object struct {
 	ObjectId         string    `gorm:"column:object_id"`
-	Cid              string    `gorm:"column:cid"`
+	NodeId           string    `gorm:"column:node_id"`
 	CreatedTimestamp time.Time `gorm:"column:created_timestamp"`
 	CreatedDate      string    `gorm:"column:created_date"`
 	Operation        string    `gorm:"column:operation"`
@@ -36,9 +36,9 @@ type Object struct {
 
 type Link struct {
 	LinkId           string    `gorm:"column:link_id"`
-	LastCid          string    `gorm:"column:last_cid"`
-	Cid              string    `gorm:"column:cid"`
-	Size             string    `gorm:"column:size"`
+	LastCid          string    `gorm:"column:last_node_id"`
+	NodeID           string    `gorm:"column:node_id"`
+	LinkSize         string    `gorm:"column:link_size"`
 	CreatedTimestamp time.Time `gorm:"column:created_timestamp"`
 	CreatedDate      string    `gorm:"column:created_date"`
 }

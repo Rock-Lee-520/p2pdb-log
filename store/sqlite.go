@@ -28,8 +28,9 @@ func (db *SqliteDB) Connect() {
 	//ormDB.SetLogger(log.New(os.Stdout, "\r\n", 0))
 }
 
-func (db *SqliteDB) Create() error {
-	return nil
+func (db *SqliteDB) Create(value interface{}) *gorm.DB {
+
+	return db.OrmDB.Create(value)
 }
 func (db *SqliteDB) Update() error {
 	return nil

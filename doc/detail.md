@@ -18,7 +18,7 @@
     - push 
 
 ### 写入事件规律
-1、merkle-dag 每个节点代表一个事件,节点id 为cid 是一个根据子节点hash merge 计算的唯一hash值
+1、merkle-dag 每个节点代表一个事件,节点id  是一个根据子节点hash merge 计算的唯一hash值
 2、每写入一个新事件，作为一个新的根
 3、每写入一个旧事件，会引起上层所有节点重新计算hash值，直到根节点
 

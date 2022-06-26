@@ -20,8 +20,6 @@ CREATE TABLE "link" (
 	link_id TEXT,
 	last_node_id TEXT,
 	node_id TEXT,
-	link_size INTEGER,
-	object_id TEXT
 	created_at TEXT,
 	updated_at TEXT,
 	deleted_at TEXT

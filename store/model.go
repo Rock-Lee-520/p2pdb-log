@@ -37,8 +37,8 @@ type Object struct {
 
 type Link struct {
 	BaseColumn
-	LinkId   string `gorm:"column:link_id"`
-	LastCid  string `gorm:"column:last_node_id"`
-	NodeID   string `gorm:"column:node_id"`
-	LinkSize string `gorm:"column:link_size"`
+	LinkId     string `gorm:"column:link_id"`
+	LastNodeId string `gorm:"column:last_node_id"`
+	NodeID     string `gorm:"column:node_id"`
+	//LinkSize   string `gorm:"column:link_size"`
 }

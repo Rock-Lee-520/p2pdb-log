@@ -1,7 +1,10 @@
 package store
 
 import (
+	"database/sql"
 	"time"
+
+	"github.com/jinzhu/gorm"
 )
 
 // gorm.Model definition
@@ -41,4 +44,16 @@ type Link struct {
 	LastNodeId string `gorm:"column:last_node_id"`
 	NodeID     string `gorm:"column:node_id"`
 	//LinkSize   string `gorm:"column:link_size"`
+}
+type User struct {
+	gorm.Model
+	Name         string
+	Age          sql.NullInt64
+	Birthday     *time.Time
+	Email        string  `gorm:"type:varchar(100);unique_index"`
+	Role         string  `gorm:"size:255"`        // 设置字段⼤⼩为255
+	MemberNumber *string `gorm:"unique;not null"` // 设置会员号（member number）唯⼀并且不为空
+	Num          int     `gorm:"AUTO_INCREMENT"`  // 设置 num 为⾃增类型
+	Address      string  `gorm:"index:addr"`      // 给address字段创建名为addr的索引
+	IgnoreMe     int     `gorm:"-"`               // 忽略本字段
 }

@@ -6,7 +6,7 @@ import (
 
 	conf "github.com/Rock-liyi/p2pdb-log/config"
 	debug "github.com/favframework/debug"
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 type BaseInfo struct {
@@ -20,7 +20,7 @@ type BaseInfo struct {
 
 type DBconnect interface {
 	Init(address string, port int64, account string, passwd string)
-	Create(value interface{}) *gorm.DB
+	Create(value interface{}) (tx *gorm.DB)
 	Update() error
 	Delete() error
 	Select(query interface{}, args ...interface{}) *gorm.DB
@@ -28,6 +28,10 @@ type DBconnect interface {
 	First(out interface{}, where ...interface{}) *gorm.DB
 	Find(out interface{}, where ...interface{}) *gorm.DB
 	Connect()
+	// HasTable(dst ...interface{}) bool
+	// CreateTable(dst ...interface{}) error
+	//AutoMigrate(dst ...interface{}) error
+	Migrator() gorm.Migrator
 }
 
 type CreateDBFactory struct {

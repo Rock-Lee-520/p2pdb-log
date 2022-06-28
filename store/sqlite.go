@@ -1,8 +1,14 @@
 package store
 
 import (
-	"github.com/jinzhu/gorm"
+	"log"
+	"os"
+	"time"
+
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 type SqliteDB struct {
@@ -18,14 +24,27 @@ func (this *BaseInfo) Init(address string, port int64, account string, passwd st
 }
 
 func (db *SqliteDB) Connect() {
-	ormDB, err := gorm.Open("sqlite3", db.BaseInfo.address)
+	newLogger := logger.New(
+		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
+		logger.Config{
+			SlowThreshold:             time.Second,   // Slow SQL threshold
+			LogLevel:                  logger.Silent, // Log level
+			IgnoreRecordNotFoundError: true,          // Ignore ErrRecordNotFound error for logger
+			Colorful:                  false,         // Disable color
+		},
+	)
+
+	ormDB, err := gorm.Open(sqlite.Open("/Users/rockli/go/src/p2pdb-server/data/test.db"), &gorm.Config{
+		Logger: newLogger,
+	})
 	if err != nil {
 		panic("failed to connect database")
 	}
 	db.OrmDB = ormDB
-	ormDB.LogMode(true)
-	ormDB.SingularTable(true)
-	//ormDB.SetLogger(log.New(os.Stdout, "\r\n", 0))
+	// ormDB.Logger
+	// ormDB.LogMode(true)
+	// ormDB.SingularTable(true)
+	//rmDB.SetLogger(log.New(os.Stdout, "\r\n", 0))
 }
 
 func (db *SqliteDB) Create(value interface{}) *gorm.DB {
@@ -53,3 +72,30 @@ func (db *SqliteDB) Find(out interface{}, where ...interface{}) *gorm.DB {
 func (db *SqliteDB) Where(query interface{}, args ...interface{}) *gorm.DB {
 	return db.OrmDB.Where(query, args)
 }
+
+// func (db *SqliteDB) AutoMigrate(dst ...interface{}) error {
+// 	type Product struct {
+// 		gorm.Model
+// 		Code  string
+// 		Price uint
+// 	}
+// 	return db.OrmDB.Migrator().AutoMigrate(&Product{})
+// }
+
+func (db *SqliteDB) Migrator() gorm.Migrator {
+	type Product struct {
+		gorm.Model
+		Code  string
+		Price uint
+	}
+	return db.OrmDB.Migrator()
+}
+
+//something wrong
+// func (db *SqliteDB) CreateTable(dst ...interface{}) error {
+// 	return db.OrmDB.Migrator().CreateTable(dst)
+// }
+
+// func (db *SqliteDB) HasTable(dst ...interface{}) bool {
+// 	return db.OrmDB.Migrator().HasTable(dst)
+// }

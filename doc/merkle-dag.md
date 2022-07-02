@@ -36,6 +36,7 @@ update  table set  name=jack where  id=1
 服务A跟服务B每执行一条DML语句就会产生一个新的节点（不包括select语句）, 此时可以看到服务A跟服务B的兰伯特时钟都递增1,由于本地发生了数据变动，服务A会将自己的变动日志dag_node2 发生给服务B，服务B同时也会将自己的变动日志dag_node2 发生给节点A
 
 #### 三、服务A跟服务B的冲突合并
+由于服务A跟服务B的 clock 版本都等于=1， 说明请求是一种并发行为，服务A跟服务B需要进行冲突合并。
 
 ![alt 属性文本](./image/serverDag.png)
 

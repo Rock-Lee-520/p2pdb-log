@@ -4,7 +4,7 @@
 #### 一、准备测试场景
 1、准备一条数据,每个服务对于每张表都会保存一张完整DAG图
 ```
-insert into table(id,name) values(1,"张三")
+insert into table(id,name) values(1,"Alice")
 ```
 2、服务A初始化DAG图
 

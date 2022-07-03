@@ -32,7 +32,7 @@ type Object struct {
 	NodeId    string `gorm:"column:node_id"`
 	Content   string `gorm:"column:content"`
 	Operation string `gorm:"column:operation"`
-	Propertie string `gorm:"column:propertie"`
+	Property string `gorm:"column:propertie"`
 }
 
 type Link struct {

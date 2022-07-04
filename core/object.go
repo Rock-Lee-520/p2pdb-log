@@ -21,7 +21,7 @@ type ObjectFactory struct {
 }
 
 func (object *ObjectFactory) InsertObject(objectId string, nodeId string, content string, operation string,
-	propertie string) (bool, error) {
+	property string) (bool, error) {
 	debug.Dump("====== InsertObject start")
 	var objectModel = &store.Object{}
 
@@ -33,7 +33,7 @@ func (object *ObjectFactory) InsertObject(objectId string, nodeId string, conten
 	objectModel.ObjectId = objectId
 	objectModel.Operation = operation
 	objectModel.Content = content
-	objectModel.Propertie = propertie
+	objectModel.Property = property
 	db := orm.Where(OBJECTID+" = ?", objectId).FirstOrCreate(&objectModel)
 	//debug.Dump(objectModel)
 	if err := db.Error; err != nil {

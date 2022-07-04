@@ -22,7 +22,7 @@ type DBconnect interface {
 	Init(address string, port int64, account string, passwd string)
 	Create(value interface{}) (tx *gorm.DB)
 	Update() error
-	Delete() error
+	Delete(value interface{}, conds ...interface{}) *gorm.DB
 	Select(query interface{}, args ...interface{}) *gorm.DB
 	Where(query interface{}, args ...interface{}) *gorm.DB
 	First(out interface{}, where ...interface{}) *gorm.DB

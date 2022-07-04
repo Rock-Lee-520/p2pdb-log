@@ -41,7 +41,9 @@ update  table set  name=jack where  id=1
 ![alt 属性文本](./image/serverDag.png)
 
 解释:
-merkle-dag 在发生并发冲突时，内置的lamport-clock会准确的记录并发冲突的节点，但是无法判断谁发生在前,谁发生在后,在兰伯特时钟实现中，一般采用比较服务ID的大小，比如A字母比B字母排在英文表前面，所以A服务发生在前，因此执行顺序为：
+merkle-dag 在发生并发冲突时，内置的lamport-clock会准确的记录并发冲突的节点，但是无法判断谁发生在前,谁发生在后,在兰伯特时钟实现中，一般采用比较服务ID的大小，比如A字母比B字母排在英文表前面，所以A服务发生在前，因此应用真正的执行顺序为：
+
+
 
 ```
 //先执行A服务产生的语句
@@ -49,6 +51,10 @@ update  table set  name=bob where  id=1
 //再执行B服务产生的语句
 update  table set  name=jack where  id=1
 ```
+
+![alt 属性文本](./image/serverDag2.png)
+
+
 
 结论：由于服务A跟服务B都采用相同的排序规则，都先执行A服务产生的语句再执行B服务产生的语句，最后两个服务id=1的数据name=jack
 
@@ -65,5 +71,8 @@ update  table set  name=bob where  id=1
 ```
 
 #### 五、解决方案
-p2pdb 团队采用一种更先进的方式，为每一张表定义一种协同协议（冲突合并规则）,也就是p2pdb-consistency 所提供的功能，用户根据自身业务场景选择不同的协同协议，如当你想做库存系统，需要对库存表的某条数据进行加减，可使用CRDT中G-counter 或者PN-counter
+p2pdb 团队采用一种更先进的方式，为每一张表定义一种协同协议（冲突合并规则）,也就是p2pdb-consistency 所提供的功能，用户根据自身业务场景选择不同的协同协议，如当你想做库存系统，需要对库存表的某条数据进行加减，在不考虑负库存的情况下，可使用CRDT中G-counter 或者PN-counter
 
+
+
+### 场景二 两个服务断网离线编辑,网络恢复后

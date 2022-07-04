@@ -32,12 +32,14 @@ type Object struct {
 	NodeId    string `gorm:"column:node_id"`
 	Content   string `gorm:"column:content"`
 	Operation string `gorm:"column:operation"`
-	Property string `gorm:"column:propertie"`
+	Property  string `gorm:"column:propertie"`
 }
 
+//  Link model definition
 type Link struct {
 	BaseColumn
 	LinkId     string `gorm:"column:link_id"`
+	OldLinkId  string `gorm:"column:old_link_id"`
 	LastNodeId string `gorm:"column:last_node_id"`
 	NodeID     string `gorm:"column:node_id"`
 	//LinkSize   string `gorm:"column:link_size"`

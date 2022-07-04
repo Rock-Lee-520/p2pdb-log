@@ -30,9 +30,9 @@ GSet是一个非常简单的CRDT，p2pdb-log 使用它实现事件日志记录
 #### Merkle DAG 
 是一种被称为有向无环图的数据结构，p2pdb-log 使用它存储事件的因果关系
 
-### Merkle-CRDT 通用反熵算法
+<!-- ### Merkle-CRDT 通用反熵算法
 ![alt 属性文本](./doc/image/merkle-crdt.png)
-
+ -->
 
 
 ### 仅附加日志

@@ -1,4 +1,4 @@
-package core
+package src
 
 import (
 	"context"
@@ -7,9 +7,6 @@ import (
 
 	cid "github.com/ipfs/go-cid"
 	ds "github.com/ipfs/go-datastore"
-	"github.com/ipfs/go-ipfs/core/coreapi"
-	core_iface "github.com/ipfs/interface-go-ipfs-core"
-	mocknet "github.com/libp2p/go-libp2p/p2p/net/mock"
 	multibase "github.com/multiformats/go-multibase"
 	"github.com/stretchr/testify/require"
 )
@@ -61,25 +58,4 @@ func MustBytesFromHex(t testing.TB, s string) []byte {
 	require.NoError(t, err)
 
 	return b
-}
-
-func NewMemoryServices(ctx context.Context, t testing.TB, m mocknet.Mocknet) (core_iface.CoreAPI, func()) {
-	t.Helper()
-
-	core, err := ipfsCore.NewNode(ctx, &ipfsCore.BuildCfg{
-		Online: true,
-		Host:   mock.MockHostOption(m),
-		ExtraOpts: map[string]bool{
-			"pubsub": true,
-		},
-	})
-	require.NoError(t, err)
-
-	api, err := coreapi.NewCoreAPI(core)
-	require.NoError(t, err)
-
-	close := func() {
-		core.Close()
-	}
-	return api, close
 }

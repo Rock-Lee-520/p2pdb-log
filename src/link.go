@@ -1,4 +1,4 @@
-package core
+package src
 
 import (
 	"github.com/Rock-liyi/p2pdb-log/store"

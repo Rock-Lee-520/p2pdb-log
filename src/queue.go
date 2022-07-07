@@ -1,4 +1,4 @@
-package core
+package src
 
 import (
 	"container/heap"

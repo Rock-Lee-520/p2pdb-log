@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/caarlos0/env/v6"
-	"github.com/dolthub/vitess/go/vt/log"
+	//"github.com/dolthub/vitess/go/vt/log"
 	"github.com/joho/godotenv"
 	_ "github.com/joho/godotenv/autoload"
 )
@@ -26,7 +26,7 @@ func init() {
 	// err := godotenv.Load(string(rootPath) + `/.env`)
 	err := godotenv.Load(`../.env`)
 	if err != nil {
-		log.Error("Error loading .env file")
+		//log.Error("Error loading .env file")
 	}
 }
 

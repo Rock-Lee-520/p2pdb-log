@@ -1,5 +1,5 @@
 // Package sorting includes utilities for ordering slices of Entries.
-package clock
+package sorting
 
 import (
 	"bytes"
@@ -7,8 +7,8 @@ import (
 	"sort"
 	"strings"
 
-	"berty.tech/go-ipfs-log/errmsg"
-	"berty.tech/go-ipfs-log/iface"
+	"github.com/Rock-liyi/p2pdb-log/iface"
+	"github.com/Rock-liyi/p2pdb-log/message"
 )
 
 func SortByClocks(a, b iface.IPFSLogEntry, resolveConflict func(a iface.IPFSLogEntry, b iface.IPFSLogEntry) (int, error)) (int, error) {
@@ -39,7 +39,7 @@ func FirstWriteWins(a, b iface.IPFSLogEntry) (int, error) {
 	res, err := LastWriteWins(a, b)
 
 	if err != nil {
-		return 0, errmsg.ErrTiebreakerFailed.Wrap(err)
+		return 0, message.ErrTiebreakerFailed.Wrap(err)
 	}
 
 	return res * -1, nil
@@ -78,14 +78,14 @@ func NoZeroes(compFunc func(a, b iface.IPFSLogEntry) (int, error)) func(a, b ifa
 	return func(a, b iface.IPFSLogEntry) (int, error) {
 		ret, err := compFunc(a, b)
 		if err != nil {
-			return 0, errmsg.ErrTiebreakerFailed.Wrap(err)
+			return 0, message.ErrTiebreakerFailed.Wrap(err)
 		}
 
 		if ret != 0 {
 			return ret, nil
 		}
 
-		return 0, errmsg.ErrTiebreakerBogus
+		return 0, message.ErrTiebreakerBogus
 	}
 }
 
@@ -99,7 +99,7 @@ func Reverse(a []iface.IPFSLogEntry) {
 func Compare(a, b iface.IPFSLogEntry) (int, error) {
 	// TODO: Make it a Golang slice-compatible sort function
 	if a == nil || b == nil || !a.Defined() || !b.Defined() {
-		return 0, errmsg.ErrEntryNotDefined
+		return 0, message.ErrEntryNotDefined
 	}
 
 	return a.GetClock().Compare(b.GetClock()), nil

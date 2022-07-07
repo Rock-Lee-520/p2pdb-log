@@ -1,13 +1,13 @@
-package src
+package tests
 
 import (
 	"context"
 	"fmt"
 	"testing"
 
-	ipfslog "berty.tech/go-ipfs-log"
-	ks "berty.tech/go-ipfs-log/keystore"
+	ipfslog "github.com/Rock-liyi/p2pdb-log"
 	idp "github.com/Rock-liyi/p2pdb-log/identityprovider"
+	ks "github.com/Rock-liyi/p2pdb-log/keystore"
 	"github.com/Rock-liyi/p2pdb-log/log"
 	debug "github.com/favframework/debug"
 	dssync "github.com/ipfs/go-datastore/sync"
@@ -43,13 +43,13 @@ func TestLogCRDT(t *testing.T) {
 	debug.Dump(identities)
 
 	logA, err := log.NewLog(ipfs, identities[0], &ipfslog.LogOptions{ID: "X"})
-	//	logB, err := log.NewLog(ipfs, identities[1], &ipfslog.LogOptions{ID: "X"})
+	//logB, err := log.NewLog(ipfs, identities[1], &ipfslog.LogOptions{ID: "X"})
 	require.NoError(t, err)
-	debug.Dump(logA)
+	// debug.Dump(logA)
 	// debug.Dump(logB)
-	// str1 := "insert into table(id,name) values(1,'Alice')"
-	// _, err = logA.Append(ctx, []byte(str1), nil)
-	// require.NoError(t, err)
+	str1 := "insert into table(id,name) values(1,'Alice')"
+	_, err = logA.Append(ctx, []byte(str1), nil)
+	require.NoError(t, err)
 
 	// logA.Join(logB, -1)
 	// str2 := "update  table set  name=bob where  id=1"

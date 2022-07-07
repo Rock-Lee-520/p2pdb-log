@@ -1,4 +1,4 @@
-package identityprovider // import "berty.tech/go-ipfs-log/identityprovider"
+package identityprovider // import "github.com/Rock-liyi/p2pdb-log/identityprovider"
 
 import (
 	"context"
@@ -7,8 +7,8 @@ import (
 	"github.com/btcsuite/btcd/btcec"
 	"github.com/libp2p/go-libp2p-core/crypto"
 
-	"berty.tech/go-ipfs-log/errmsg"
-	"berty.tech/go-ipfs-log/keystore"
+	"github.com/Rock-liyi/p2pdb-log/keystore"
+	"github.com/Rock-liyi/p2pdb-log/message"
 )
 
 var supportedTypes = map[string]func(*CreateIdentityOptions) Interface{
@@ -22,7 +22,7 @@ type Identities struct {
 
 func getHandlerFor(typeName string) (func(*CreateIdentityOptions) Interface, error) {
 	if !IsSupported(typeName) {
-		return nil, errmsg.ErrIdentityProviderNotSupported
+		return nil, message.ErrIdentityProviderNotSupported
 	}
 
 	return supportedTypes[typeName], nil
@@ -37,12 +37,12 @@ func newIdentities(keyStore keystore.Interface) *Identities {
 func (i *Identities) Sign(ctx context.Context, identity *Identity, data []byte) ([]byte, error) {
 	privKey, err := i.keyStore.GetKey(ctx, identity.ID)
 	if err != nil {
-		return nil, errmsg.ErrKeyNotInKeystore.Wrap(err)
+		return nil, message.ErrKeyNotInKeystore.Wrap(err)
 	}
 
 	sig, err := i.keyStore.Sign(privKey, data)
 	if err != nil {
-		return nil, errmsg.ErrSigSign.Wrap(err)
+		return nil, message.ErrSigSign.Wrap(err)
 	}
 
 	return sig, nil
@@ -62,7 +62,7 @@ func (i *Identities) Verify(signature []byte, publicKey crypto.PubKey, data []by
 func compressedToUncompressedS256Key(pubKeyBytes []byte) ([]byte, error) {
 	pubKey, err := btcec.ParsePubKey(pubKeyBytes, btcec.S256())
 	if err != nil {
-		return nil, errmsg.ErrNotSecp256k1PubKey.Wrap(err)
+		return nil, message.ErrNotSecp256k1PubKey.Wrap(err)
 	}
 
 	if !btcec.IsCompressedPubKey(pubKeyBytes) {
@@ -76,13 +76,13 @@ func compressedToUncompressedS256Key(pubKeyBytes []byte) ([]byte, error) {
 func (i *Identities) CreateIdentity(ctx context.Context, options *CreateIdentityOptions) (*Identity, error) {
 	NewIdentityProvider, err := getHandlerFor(options.Type)
 	if err != nil {
-		return nil, errmsg.ErrIdentityProviderNotSupported.Wrap(err)
+		return nil, message.ErrIdentityProviderNotSupported.Wrap(err)
 	}
 
 	identityProvider := NewIdentityProvider(options)
 	id, err := identityProvider.GetID(ctx, options)
 	if err != nil {
-		return nil, errmsg.ErrIdentityUnknown.Wrap(err)
+		return nil, message.ErrIdentityUnknown.Wrap(err)
 	}
 
 	// FIXME ?
@@ -94,25 +94,25 @@ func (i *Identities) CreateIdentity(ctx context.Context, options *CreateIdentity
 
 	publicKey, idSignature, err := i.signID(ctx, id)
 	if err != nil {
-		return nil, errmsg.ErrSigSign.Wrap(err)
+		return nil, message.ErrSigSign.Wrap(err)
 	}
 
 	publicKeyBytes, err := publicKey.Raw()
 	if err != nil {
-		return nil, errmsg.ErrNotSecp256k1PubKey.Wrap(err)
+		return nil, message.ErrNotSecp256k1PubKey.Wrap(err)
 	}
 
 	// JS version of IPFS Log expects an uncompressed Secp256k1 key
 	if publicKey.Type().String() == "Secp256k1" {
 		publicKeyBytes, err = compressedToUncompressedS256Key(publicKeyBytes)
 		if err != nil {
-			return nil, errmsg.ErrNotSecp256k1PubKey.Wrap(err)
+			return nil, message.ErrNotSecp256k1PubKey.Wrap(err)
 		}
 	}
 
 	pubKeyIDSignature, err := identityProvider.SignIdentity(ctx, append(publicKeyBytes, idSignature...), options.ID)
 	if err != nil {
-		return nil, errmsg.ErrIdentityCreationFailed.Wrap(err)
+		return nil, message.ErrIdentityCreationFailed.Wrap(err)
 	}
 
 	return &Identity{
@@ -133,13 +133,13 @@ func (i *Identities) signID(ctx context.Context, id string) (crypto.PubKey, []by
 		privKey, err = i.keyStore.CreateKey(ctx, id)
 
 		if err != nil {
-			return nil, nil, errmsg.ErrSigSign.Wrap(err)
+			return nil, nil, message.ErrSigSign.Wrap(err)
 		}
 	}
 
 	idSignature, err := i.keyStore.Sign(privKey, []byte(id))
 	if err != nil {
-		return nil, nil, errmsg.ErrSigSign.Wrap(err)
+		return nil, nil, message.ErrSigSign.Wrap(err)
 	}
 
 	return privKey.GetPublic(), idSignature, nil
@@ -149,12 +149,12 @@ func (i *Identities) signID(ctx context.Context, id string) (crypto.PubKey, []by
 func (i *Identities) VerifyIdentity(identity *Identity) error {
 	pubKey, err := identity.GetPublicKey()
 	if err != nil {
-		return errmsg.ErrPubKeyDeserialization.Wrap(err)
+		return message.ErrPubKeyDeserialization.Wrap(err)
 	}
 
 	idBytes, err := hex.DecodeString(identity.ID)
 	if err != nil {
-		return errmsg.ErrIdentityDeserialization.Wrap(err)
+		return message.ErrIdentityDeserialization.Wrap(err)
 	}
 
 	err = i.keyStore.Verify(
@@ -163,12 +163,12 @@ func (i *Identities) VerifyIdentity(identity *Identity) error {
 		idBytes,
 	)
 	if err != nil {
-		return errmsg.ErrSigNotVerified.Wrap(err)
+		return message.ErrSigNotVerified.Wrap(err)
 	}
 
 	identityProvider, err := getHandlerFor(identity.Type)
 	if err != nil {
-		return errmsg.ErrSigNotVerified.Wrap(err)
+		return message.ErrSigNotVerified.Wrap(err)
 	}
 
 	return identityProvider(nil).VerifyIdentity(identity)
@@ -178,7 +178,7 @@ func (i *Identities) VerifyIdentity(identity *Identity) error {
 func CreateIdentity(ctx context.Context, options *CreateIdentityOptions) (*Identity, error) {
 	ks := options.Keystore
 	if ks == nil {
-		return nil, errmsg.ErrKeystoreNotDefined
+		return nil, message.ErrKeystoreNotDefined
 	}
 
 	identities := newIdentities(ks)
@@ -196,7 +196,7 @@ func IsSupported(typeName string) bool {
 // AddIdentityProvider registers an new identity provider.
 func AddIdentityProvider(identityProvider func(*CreateIdentityOptions) Interface) error {
 	if identityProvider == nil {
-		return errmsg.ErrIdentityProviderNotDefined
+		return message.ErrIdentityProviderNotDefined
 	}
 
 	supportedTypes[identityProvider(nil).GetType()] = identityProvider

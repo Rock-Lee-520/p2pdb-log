@@ -1,10 +1,10 @@
-package src
+package tests
 
 import (
 	"context"
 	"testing"
 
-	"berty.tech/go-ipfs-log/iface"
+	"github.com/Rock-liyi/p2pdb-log/iface"
 	ipfsCore "github.com/ipfs/go-ipfs/core"
 	"github.com/ipfs/go-ipfs/core/coreapi"
 	mock "github.com/ipfs/go-ipfs/core/mock"

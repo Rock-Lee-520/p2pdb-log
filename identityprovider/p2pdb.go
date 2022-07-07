@@ -1,4 +1,4 @@
-package identityprovider // import "berty.tech/go-ipfs-log/identityprovider"
+package identityprovider // import "github.com/Rock-liyi/p2pdb-log/identityprovider"
 
 import (
 	"context"
@@ -6,8 +6,8 @@ import (
 
 	"github.com/libp2p/go-libp2p-core/crypto"
 
-	"berty.tech/go-ipfs-log/errmsg"
-	"berty.tech/go-ipfs-log/keystore"
+	"github.com/Rock-liyi/p2pdb-log/keystore"
+	"github.com/Rock-liyi/p2pdb-log/message"
 )
 
 type P2PDBIdentityProvider struct {
@@ -32,13 +32,13 @@ func (p *P2PDBIdentityProvider) GetID(ctx context.Context, options *CreateIdenti
 	if err != nil || private == nil {
 		private, err = p.keystore.CreateKey(ctx, options.ID)
 		if err != nil {
-			return "", errmsg.ErrKeyStoreCreateEntry.Wrap(err)
+			return "", message.ErrKeyStoreCreateEntry.Wrap(err)
 		}
 	}
 
 	pubBytes, err := private.GetPublic().Raw()
 	if err != nil {
-		return "", errmsg.ErrPubKeySerialization.Wrap(err)
+		return "", message.ErrPubKeySerialization.Wrap(err)
 	}
 
 	return hex.EncodeToString(pubBytes), nil
@@ -48,7 +48,7 @@ func (p *P2PDBIdentityProvider) GetID(ctx context.Context, options *CreateIdenti
 func (p *P2PDBIdentityProvider) SignIdentity(ctx context.Context, data []byte, id string) ([]byte, error) {
 	key, err := p.keystore.GetKey(ctx, id)
 	if err != nil {
-		return nil, errmsg.ErrKeyNotInKeystore
+		return nil, message.ErrKeyNotInKeystore
 	}
 
 	//data, _ = hex.DecodeString(hex.EncodeToString(data))
@@ -58,7 +58,7 @@ func (p *P2PDBIdentityProvider) SignIdentity(ctx context.Context, data []byte, i
 
 	signature, err := key.Sign(data)
 	if err != nil {
-		return nil, errmsg.ErrSigSign.Wrap(err)
+		return nil, message.ErrSigSign.Wrap(err)
 	}
 
 	return signature, nil
@@ -68,12 +68,12 @@ func (p *P2PDBIdentityProvider) SignIdentity(ctx context.Context, data []byte, i
 func (p *P2PDBIdentityProvider) Sign(ctx context.Context, identity *Identity, data []byte) ([]byte, error) {
 	key, err := p.keystore.GetKey(ctx, identity.ID)
 	if err != nil {
-		return nil, errmsg.ErrKeyNotInKeystore.Wrap(err)
+		return nil, message.ErrKeyNotInKeystore.Wrap(err)
 	}
 
 	sig, err := key.Sign(data)
 	if err != nil {
-		return nil, errmsg.ErrSigSign.Wrap(err)
+		return nil, message.ErrSigSign.Wrap(err)
 	}
 
 	return sig, nil
@@ -82,7 +82,7 @@ func (p *P2PDBIdentityProvider) Sign(ctx context.Context, identity *Identity, da
 func (p *P2PDBIdentityProvider) UnmarshalPublicKey(data []byte) (crypto.PubKey, error) {
 	pubKey, err := crypto.UnmarshalSecp256k1PublicKey(data)
 	if err != nil {
-		return nil, errmsg.ErrInvalidPubKeyFormat
+		return nil, message.ErrInvalidPubKeyFormat
 	}
 
 	return pubKey, nil

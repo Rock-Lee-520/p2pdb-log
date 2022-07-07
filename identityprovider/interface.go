@@ -1,9 +1,9 @@
-package identityprovider // import "berty.tech/go-ipfs-log/identityprovider"
+package identityprovider // import "github.com/Rock-liyi/p2pdb-log/identityprovider"
 
 import (
 	"context"
 
-	"berty.tech/go-ipfs-log/keystore"
+	"github.com/Rock-liyi/p2pdb-log/keystore"
 	crypto "github.com/libp2p/go-libp2p-core/crypto"
 )
 

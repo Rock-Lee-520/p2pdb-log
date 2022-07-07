@@ -1,5 +1,5 @@
-// Package errmsg defines error messages used by the Go version of IPFS Log.
-package errmsg // import "berty.tech/go-ipfs-log/errmsg"
+// Package message defines error messages used by the Go version of IPFS Log.
+package message // import "github.com/Rock-liyi/p2pdb-log/message"
 
 import (
 	"fmt"

@@ -45,6 +45,15 @@ type Link struct {
 	//LinkSize   string `gorm:"column:link_size"`
 }
 
+//  Link model definition
+type Service struct {
+	BaseColumn
+	ServiceId string `gorm:"column:link_id"`
+	Cid       string `gorm:"column:cid"`
+	Ip        string `gorm:"column:ip"`
+	//LinkSize   string `gorm:"column:link_size"`
+}
+
 // type User struct {
 // 	gorm.Model
 // 	Name         string

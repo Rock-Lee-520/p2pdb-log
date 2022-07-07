@@ -1,4 +1,4 @@
-package main
+package test
 
 import (
 	"p2pdb-log/store"

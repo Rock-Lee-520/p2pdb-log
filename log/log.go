@@ -15,6 +15,7 @@ import (
 	"github.com/Rock-liyi/p2pdb-log/identityprovider"
 	"github.com/Rock-liyi/p2pdb-log/iface"
 	"github.com/Rock-liyi/p2pdb-log/io/cbor"
+	debug "github.com/favframework/debug"
 	"github.com/ipfs/go-cid"
 	core_iface "github.com/ipfs/interface-go-ipfs-core"
 )
@@ -339,6 +340,104 @@ func (l *IPFSLog) Append(ctx context.Context, payload []byte, opts *AppendOption
 
 	newTime := maxClockTimeForEntries(heads.Slice(), 0)
 	newTime = maxInt(l.Clock.GetTime(), newTime) + 1
+
+	clockID := l.Clock.GetID()
+
+	l.Clock = entry.NewLamportClock(clockID, newTime)
+
+	// Get the required amount of hashes to next entries (as per current state of the log)
+	all, err := l.traverse(heads, maxInt(pointerCount, heads.Len()), "")
+	if err != nil {
+		return nil, message.ErrLogAppendFailed.Wrap(err)
+	}
+
+	references := getEveryPow2(all, minInt(pointerCount, all.Len()))
+
+	// Always include the last known reference
+	if all.Len() < pointerCount {
+		ref := all.At(uint(all.Len() - 1))
+		if ref != nil {
+			references = append(references, ref)
+		}
+	}
+
+	for _, h := range heads.Slice() {
+		next = append([]cid.Cid{h.GetHash()}, next...)
+	}
+
+	for _, r := range references {
+		isInNext := false
+		for _, n := range next {
+			if r.GetHash().Equals(n) {
+				isInNext = true
+				break
+			}
+		}
+
+		if !isInNext {
+			refs = append(refs, r.GetHash())
+		}
+	}
+
+	// TODO: ensure port of ```Object.keys(Object.assign({}, this._headsIndex, references))``` is correctly implemented
+
+	// @TODO: Split Entry.create into creating object, checking permission, signing and then posting to IPFS
+	// Create the entry and add it to the internal cache
+	e, err := entry.CreateEntryWithIO(ctx, l.Storage, l.Identity, &entry.Entry{
+		LogID:   l.ID,
+		Payload: payload,
+		Next:    next,
+		Clock:   entry.NewLamportClock(l.Clock.GetID(), l.Clock.GetTime()),
+		Refs:    refs,
+	}, &iface.CreateEntryOptions{
+		Pin: opts.Pin,
+	}, l.io)
+
+	if err != nil {
+		return nil, message.ErrLogAppendFailed.Wrap(err)
+	}
+
+	if err := l.AccessController.CanAppend(e, l.Identity.Provider, &CanAppendContext{log: l}); err != nil {
+		return nil, message.ErrLogAppendDenied.Wrap(err)
+	}
+
+	l.Entries.Set(e.GetHash().String(), e)
+
+	for _, nextEntryCid := range next {
+		l.Next.Set(nextEntryCid.String(), e)
+	}
+
+	l.heads = entry.NewOrderedMapFromEntries([]iface.IPFSLogEntry{e})
+
+	return e, nil
+}
+
+// Append Appends an entry to the log Returns the latest Entry
+// it need to give clock time to the current entry
+// payload is the data that will be in the Entry
+func (l *IPFSLog) AppendByNewTime(ctx context.Context, payload []byte, opts *AppendOptions, newTime int) (iface.IPFSLogEntry, error) {
+	l.lock.Lock()
+	defer l.lock.Unlock()
+
+	// next and refs are empty slices instead of nil
+	next := []cid.Cid{}
+	refs := []cid.Cid{}
+
+	// Update the clock (find the latest clock)
+	heads := l.sortedHeads(l.heads.Slice())
+
+	if opts == nil {
+		opts = &AppendOptions{}
+	}
+
+	pointerCount := 1
+	if opts.PointerCount != 0 {
+		pointerCount = opts.PointerCount
+	}
+	debug.Dump("pointerCount is ")
+	debug.Dump(pointerCount)
+	// newTime := maxClockTimeForEntries(heads.Slice(), 0)
+	// newTime = maxInt(l.Clock.GetTime(), newTime) + 1
 
 	clockID := l.Clock.GetID()
 

@@ -56,7 +56,7 @@ func TestDag(t *testing.T) {
 	logA, err := log.NewLog(ipfs, identities[0], &ipfslog.LogOptions{ID: "A"})
 	logB, err := log.NewLog(ipfs, identities[1], &ipfslog.LogOptions{ID: "A"})
 	require.NoError(t, err)
-
+	logA.Clock.SetTime(0)
 	debug.Dump("logA.GetTime() is ")
 	debug.Dump(logA.Clock.GetTime())
 
@@ -67,21 +67,21 @@ func TestDag(t *testing.T) {
 	str2 := "A2"
 	_, err = logA.AppendByNewTime(ctx, []byte(str2), nil, 2)
 	require.NoError(t, err)
-
+	logA.Clock.SetTime(6)
 	str3 := "A3"
-	_, err = logA.AppendByNewTime(ctx, []byte(str3), nil, 3)
+	_, err = logA.AppendByNewTime(ctx, []byte(str3), nil, 6)
 	require.NoError(t, err)
 
 	str4 := "A4"
-	_, err = logA.AppendByNewTime(ctx, []byte(str4), nil, 4)
+	_, err = logA.AppendByNewTime(ctx, []byte(str4), nil, 7)
 	require.NoError(t, err)
 
 	str5 := "A5"
-	_, err = logA.AppendByNewTime(ctx, []byte(str5), nil, 5)
+	_, err = logA.AppendByNewTime(ctx, []byte(str5), nil, 8)
 	require.NoError(t, err)
 	debug.Dump("logA.GetTime() is ")
 	debug.Dump(logA.Clock.GetTime())
-
+	logB.Clock.SetTime(0)
 	strB1 := "B1"
 	_, err = logB.AppendByNewTime(ctx, []byte(strB1), nil, 1)
 	require.NoError(t, err)
@@ -101,14 +101,20 @@ func TestDag(t *testing.T) {
 	strB5 := "B5"
 	_, err = logB.AppendByNewTime(ctx, []byte(strB5), nil, 5)
 	require.NoError(t, err)
+
+	// strB6 := "B6"
+	// logA.Clock.SetTime(6)
+	// _, err = logB.AppendByNewTime(ctx, []byte(strB6), nil, 9)
+
+	require.NoError(t, err)
 	debug.Dump("logB.GetTime() is ")
 	debug.Dump(logB.Clock.GetTime())
-
+	logA.Join(logB, -1)
 	var dataA = logA.ToString(nil)
-	var dataB = logB.ToString(nil)
+	//var dataB = logB.ToString(nil)
 	fmt.Print(dataA)
 	fmt.Print("\r\n ============\r\n ")
-	fmt.Print(dataB)
+	//fmt.Print(dataB)
 
 }
 
@@ -140,7 +146,7 @@ func TestDagMerge(t *testing.T) {
 	}
 	// next := []cid.Cid{}
 
-	logA, err := log.NewLog(ipfs, identities[0], &ipfslog.LogOptions{ID: "A", SortFn: sorting.Compare})
+	logA, err := log.NewLog(ipfs, identities[0], &ipfslog.LogOptions{ID: "A", SortFn: sorting.SortByEntryHash})
 	//logB, err := log.NewLog(ipfs, identities[0], &ipfslog.LogOptions{ID: "A"})
 	require.NoError(t, err)
 	logA.Clock.SetTime(80)
@@ -151,6 +157,7 @@ func TestDagMerge(t *testing.T) {
 	_, err = logA.AppendByNewTime(ctx, []byte(str1), nil, 80)
 	require.NoError(t, err)
 	str2 := "A2"
+	logA.Clock.SetTime(78)
 	_, err = logA.AppendByNewTime(ctx, []byte(str2), nil, 78)
 	require.NoError(t, err)
 	str3 := "A3"
@@ -172,7 +179,7 @@ func TestDagMerge(t *testing.T) {
 	require.NoError(t, err)
 
 	strB3 := "B3"
-	_, err = logA.AppendByNewTime(ctx, []byte(strB3), nil, 62)
+	_, err = logA.AppendByNewTime(ctx, []byte(strB3), nil, 63)
 	require.NoError(t, err)
 
 	require.NoError(t, err)
@@ -180,10 +187,20 @@ func TestDagMerge(t *testing.T) {
 	debug.Dump(logA.Clock.GetTime())
 	//logA.Join(logB, -1)
 	//logB.Join(logA, -1)
-	var dataA = logA.ToString(nil)
-	//	var dataB = logB.ToString(nil)
+	//var dataA = logA.ToString(nil)
+	//var dataB = logA.ToString(nil)
+	for _, r := range logA.Values().Slice() {
+		// parents := entry.FindChildren(r, logA.Values().Slice())
+		// payload := string(r.GetPayload())
+		fmt.Print("\r\n ============\r\n ")
+		// fmt.Print(parents)
+		// fmt.Print(payload)
+		fmt.Print(r.GetClock().GetTime())
+		//fmt.Print(r.GetClock().GetID())
+		//fmt.Print(r.GetClock().Defined())
 
-	fmt.Print(dataA)
+	}
+
 	fmt.Print("\r\n ============\r\n ")
 	//fmt.Print(dataB)
 

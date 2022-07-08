@@ -434,13 +434,14 @@ func (l *IPFSLog) AppendByNewTime(ctx context.Context, payload []byte, opts *App
 	if opts.PointerCount != 0 {
 		pointerCount = opts.PointerCount
 	}
-	debug.Dump("pointerCount is ")
-	debug.Dump(pointerCount)
-	// newTime := maxClockTimeForEntries(heads.Slice(), 0)
-	// newTime = maxInt(l.Clock.GetTime(), newTime) + 1
+	// debug.Dump("pointerCount is ")
+	// debug.Dump(pointerCount)
+	newTime = maxClockTimeForEntries(heads.Slice(), 0)
+	newTime = maxInt(l.Clock.GetTime(), newTime) + 1
 
 	clockID := l.Clock.GetID()
 
+	//debug.Dump(clockID)
 	l.Clock = entry.NewLamportClock(clockID, newTime)
 
 	// Get the required amount of hashes to next entries (as per current state of the log)
@@ -462,6 +463,8 @@ func (l *IPFSLog) AppendByNewTime(ctx context.Context, payload []byte, opts *App
 	for _, h := range heads.Slice() {
 		next = append([]cid.Cid{h.GetHash()}, next...)
 	}
+	debug.Dump("next is ")
+	//debug.Dump(references)
 
 	for _, r := range references {
 		isInNext := false

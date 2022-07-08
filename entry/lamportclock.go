@@ -5,6 +5,7 @@ import (
 	"math"
 
 	"github.com/Rock-liyi/p2pdb-log/iface"
+	debug "github.com/favframework/debug"
 )
 
 type LamportClock struct {
@@ -48,6 +49,7 @@ func (l *LamportClock) Tick() iface.IPFSLogLamportClock {
 
 // Merge fusion two LamportClocks.
 func (l *LamportClock) Merge(clock iface.IPFSLogLamportClock) iface.IPFSLogLamportClock {
+	debug.Dump("call Merge")
 	l.Time = int(math.Max(float64(l.Time), float64(clock.GetTime())))
 
 	return &LamportClock{
@@ -58,6 +60,7 @@ func (l *LamportClock) Merge(clock iface.IPFSLogLamportClock) iface.IPFSLogLampo
 
 // Compare calculate the "distance" based on the clock, ie. lower or greater.
 func (l *LamportClock) Compare(b iface.IPFSLogLamportClock) int {
+	debug.Dump("call Compare")
 	// TODO: Make it a Golang slice-compatible sort function
 	dist := l.Time - b.GetTime()
 

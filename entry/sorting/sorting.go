@@ -9,9 +9,11 @@ import (
 
 	"github.com/Rock-liyi/p2pdb-log/iface"
 	"github.com/Rock-liyi/p2pdb-log/message"
+	debug "github.com/favframework/debug"
 )
 
 func SortByClocks(a, b iface.IPFSLogEntry, resolveConflict func(a iface.IPFSLogEntry, b iface.IPFSLogEntry) (int, error)) (int, error) {
+	debug.Dump("call SortByClocks ")
 	diff := a.GetClock().Compare(b.GetClock())
 
 	if diff == 0 {
@@ -22,6 +24,7 @@ func SortByClocks(a, b iface.IPFSLogEntry, resolveConflict func(a iface.IPFSLogE
 }
 
 func SortByClockID(a, b iface.IPFSLogEntry, resolveConflict func(a iface.IPFSLogEntry, b iface.IPFSLogEntry) (int, error)) (int, error) {
+	debug.Dump("call SortByClockID ")
 	comparedIDs := bytes.Compare(a.GetClock().GetID(), b.GetClock().GetID())
 
 	if comparedIDs == 0 {
@@ -46,6 +49,7 @@ func FirstWriteWins(a, b iface.IPFSLogEntry) (int, error) {
 }
 
 func LastWriteWins(a, b iface.IPFSLogEntry) (int, error) {
+	debug.Dump("call LastWriteWins ")
 	sortByID := func(a, b iface.IPFSLogEntry) (int, error) {
 		return SortByClockID(a, b, First)
 	}
@@ -58,6 +62,7 @@ func LastWriteWins(a, b iface.IPFSLogEntry) (int, error) {
 }
 
 func SortByEntryHash(a, b iface.IPFSLogEntry) (int, error) {
+	debug.Dump("call SortByEntryHash ")
 	// Ultimate conflict resolution (compare hashes)
 	compareHash := func(a, b iface.IPFSLogEntry) (int, error) {
 		return strings.Compare(a.GetHash().String(), b.GetHash().String()), nil
@@ -97,6 +102,7 @@ func Reverse(a []iface.IPFSLogEntry) {
 }
 
 func Compare(a, b iface.IPFSLogEntry) (int, error) {
+
 	// TODO: Make it a Golang slice-compatible sort function
 	if a == nil || b == nil || !a.Defined() || !b.Defined() {
 		return 0, message.ErrEntryNotDefined

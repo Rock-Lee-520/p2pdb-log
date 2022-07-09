@@ -64,6 +64,11 @@ GSet是一个非常简单的CRDT，p2pdb-log 使用它实现事件日志记录
 
 
 
+
+## 部分代码参考来源
+[go-ipfs-log](https://github.com/berty/go-ipfs-log):遵守Apache License 2.0协议
+
+
 ## Licensing
 
 *p2pdb-log* is licensed under the Apache License, Version 2.0.

@@ -1,4 +1,5 @@
-package core
+// Package identityprovider defines a default identity provider for IPFS Log and OrbitDB.
+package identityprovider // import "github.com/Rock-liyi/p2pdb-log/identityprovider"
 
 import (
 	ic "github.com/libp2p/go-libp2p-core/crypto"
@@ -14,6 +15,7 @@ type Identity struct {
 	PublicKey  []byte             `json:"publicKey,omitempty"`
 	Signatures *IdentitySignature `json:"signatures,omitempty"`
 	Type       string             `json:"type,omitempty"`
+	Provider   Interface
 }
 
 // Filtered gets fields that should be present in the CBOR representation of identity.

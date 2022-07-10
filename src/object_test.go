@@ -1,4 +1,4 @@
-package core
+package src
 
 import (
 	"testing"
@@ -20,9 +20,9 @@ func TestObjectInsert(t *testing.T) {
 	nodeId := cid.String()
 	content := "content"
 	operation := "operation"
-	propertie := "propertie"
+	property := "property"
 	ok, err := object.InsertObject(objectId, nodeId, content,
-		operation, propertie)
+		operation, property)
 	if err != nil {
 		debug.Dump("======")
 		debug.Dump(err.Error())

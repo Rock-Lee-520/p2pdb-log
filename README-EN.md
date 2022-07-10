@@ -9,7 +9,7 @@ Go version of append-only log base on [Merkle-CRDT](https://research.protocol.ai
 
 
 <p align="center"><b>
-    <a href="https://github.com/kkguan/p2pdb">p2pdb</a> 
+    <a href="https://github.com/Rock-liyi/p2pdb">p2pdb</a> 
 </b></p>
 
 ## The source of some code 

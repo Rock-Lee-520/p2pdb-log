@@ -1,4 +1,4 @@
-package core
+package src
 
 type Dag interface {
 	Compare()

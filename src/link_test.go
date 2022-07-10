@@ -1,4 +1,4 @@
-package core
+package src
 
 import (
 	"testing"
@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestLinkInsert(t *testing.T) {
+func TestInsertLink(t *testing.T) {
 	require := require.New(t)
 	var link *LinkFactory
 	var cid, err = encryption.GetCid("cid")
@@ -17,12 +17,26 @@ func TestLinkInsert(t *testing.T) {
 	}
 
 	linkId := cid.String()
+	debug.Dump(linkId)
 	nodeId := cid.String()
 	lastNodeId := cid.String()
-	ok, err := link.InsertLink(linkId, nodeId, lastNodeId)
+
+	ok, err := link.InsertLink(linkId, nodeId, []string{nodeId, lastNodeId})
 	if err != nil {
-		debug.Dump("======")
+
 		debug.Dump(err.Error())
 	}
 	require.True(ok)
+}
+
+func TestLinkDelete(t *testing.T) {
+	require := require.New(t)
+	var link *LinkFactory
+	linkId := "QmU178mY5DBMRvJbU9nZn5nPBr93o7gfDwf5rDJvvohjxq"
+
+	err := link.DeleteLink(linkId)
+	if err != nil {
+		require.True(false)
+	}
+	require.True(true)
 }

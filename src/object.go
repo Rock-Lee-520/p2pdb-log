@@ -2,6 +2,7 @@ package src
 
 import (
 	"github.com/Rock-liyi/p2pdb-log/store"
+	orm "github.com/Rock-liyi/p2pdb-store/orm"
 	debug "github.com/favframework/debug"
 )
 
@@ -9,7 +10,7 @@ type Object interface {
 
 	// it need  to  note that  if the object content is repeated, only one can be saved,
 	// and  then return the repeatedly object id
-	InsertObject(orm store.DBconnect, objectId string, nodeId string, Content string, Operation string,
+	InsertObject(orm orm.DBconnect, objectId string, nodeId string, Content string, Operation string,
 		Propertie string) (bool, error)
 }
 

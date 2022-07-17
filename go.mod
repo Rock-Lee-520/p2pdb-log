@@ -3,6 +3,7 @@ module github.com/Rock-liyi/p2pdb-log
 go 1.16
 
 require (
+	github.com/Rock-liyi/p2pdb v0.0.0-20220711143833-23a667524d1a
 	github.com/Rock-liyi/p2pdb-store v0.1.2
 	github.com/btcsuite/btcd v0.22.1
 	github.com/caarlos0/env/v6 v6.9.3
@@ -31,3 +32,5 @@ require (
 )
 
 // replace github.com/Rock-liyi/p2pdb-log => ../p2pdb-log
+
+// replace github.com/Rock-liyi/p2pdb => ../p2pdb

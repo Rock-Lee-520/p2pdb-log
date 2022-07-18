@@ -2,10 +2,7 @@ package src
 
 import (
 	"github.com/Rock-liyi/p2pdb-log/store"
-	orm "github.com/Rock-liyi/p2pdb-store/orm"
 )
-
-var DB *orm.CreateDBFactory
 
 type Node interface {
 	InsertNode(node_id string, node_type string, lamport_clock int64, receiving_timestamp int32,

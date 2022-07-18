@@ -31,5 +31,5 @@ class Link <<Entity>> {
     - createdTimestamp //本机创建时间戳
     - createdDate //本机创建时间戳
 }
-Node -->  Object -->  Link
+
 @enduml

@@ -29,7 +29,7 @@ var encodedSamples = map[multi.Encoding]string{
 	multi.Base64url:         "uRGVjZW50cmFsaXplIGV2ZXJ5dGhpbmchISE",
 	multi.Base64pad:         "MRGVjZW50cmFsaXplIGV2ZXJ5dGhpbmchISE=",
 	multi.Base64urlPad:      "URGVjZW50cmFsaXplIGV2ZXJ5dGhpbmchISE=",
-	multi.Base256Emoji:      "🚀💛✋💃✋😻😈🥺🤤🍀🌟💐✋😅✋💦✋🥺🏃😈😴🌟😻😝👏👏👏",
+	//	multi.Base256Emoji:      "🚀💛✋💃✋😻😈🥺🤤🍀🌟💐✋😅✋💦✋🥺🏃😈😴🌟😻😝👏👏👏",
 }
 
 func testEncode(t *testing.T, encoding multi.Encoding, bytes []byte, expected string) {

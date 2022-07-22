@@ -220,7 +220,7 @@
 
 
 
-p2pdb was ported fromhttps://github.com/berty/go-ipfs-log
+p2pdb-log was ported from https://github.com/berty/go-ipfs-log
 
 Apache-2.0 license
 

@@ -18,7 +18,7 @@ func TestLog(t *testing.T) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	m := mocknet.New(ctx)
+	m := mocknet.New()
 	ipfs, closeNode := NewMemoryServices(ctx, t, m)
 	defer closeNode()
 	//debug.Dump(ipfs)
@@ -69,5 +69,3 @@ func TestLog(t *testing.T) {
 	fmt.Print(dataB)
 
 }
-
-

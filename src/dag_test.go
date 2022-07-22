@@ -6,7 +6,7 @@ import (
 	"testing"
 
 	"github.com/ipfs/go-cid"
-	_ "github.com/ipld/go-ipld-prime/codec/dagcbor"
+	// _ "github.com/ipld/go-ipld-prime/codec/dagcbor"
 	"github.com/ipld/go-ipld-prime/codec/dagjson"
 	"github.com/ipld/go-ipld-prime/datamodel"
 	"github.com/ipld/go-ipld-prime/fluent"

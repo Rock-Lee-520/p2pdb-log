@@ -2,7 +2,7 @@ package src
 
 import (
 	"github.com/Rock-liyi/p2pdb-log/store"
-	orm "github.com/Rock-liyi/p2pdb-store/orm"
+	orm "github.com/Rock-liyi/p2pdb/infrastructure/core/orm"
 	debug "github.com/favframework/debug"
 )
 

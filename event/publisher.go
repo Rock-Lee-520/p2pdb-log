@@ -5,5 +5,8 @@ import (
 )
 
 func PublishSyncEvent(eventType string, data []byte) {
-	event.PublishSyncEvent(eventType, data)
+	var ms event.Message
+	ms.Data = data
+	ms.Type = eventType
+	event.PublishSyncEvent(eventType, ms)
 }

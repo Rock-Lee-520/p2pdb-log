@@ -5,8 +5,6 @@ import (
 	"math/rand"
 	"testing"
 	"time"
-
-	_ "github.com/Rock-liyi/p2pdb/application/event/subscribe" //注册事件监听
 )
 
 func randInt(min int, max int) byte {

@@ -58,6 +58,8 @@ github.com/Kubuxu/go-os-helper v0.0.1/go.mod h1:N8B+I7vPCT80IcP58r50u4+gEEcsZETF
 github.com/OneOfOne/xxhash v1.2.2 h1:KMrpdQIwFcEqXDklaen+P1axHaj9BSKzvpUUfnHldSE=
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
 github.com/PuerkitoBio/goquery v1.5.1/go.mod h1:GsLWisAFVj4WgDibEWF4pvYnkVQBpKBKeU+7zCJoLcc=
+github.com/Rock-liyi/p2pdb v0.0.0-20220711143833-23a667524d1a h1:GekKERC0l+BZKE+n8kxHFMroHaRFee7NYevBycnqFoo=
+github.com/Rock-liyi/p2pdb v0.0.0-20220711143833-23a667524d1a/go.mod h1:vLogQFON3I4/Ao4Vau5dAZWS7W9z+TMAtZf2O5GBNtQ=
 github.com/Rock-liyi/p2pdb-log v0.0.0-20220710152438-0fcbd2cb401f/go.mod h1:3sRgrrWCZ0v/9OFdd5cdXAM1LtkjBUlb5y0tYTEQVXU=
 github.com/Rock-liyi/p2pdb-server v0.1.2/go.mod h1:chCGBC9tGlpv8Oo27CLkyKQlpVGSRrJWgFXQk4Z6Ooc=
 github.com/Rock-liyi/p2pdb-store v0.1.0/go.mod h1:a6ONL/QOz18Z0EEJM/niNjAfZUqd7zHbG8DAMdzFp6g=

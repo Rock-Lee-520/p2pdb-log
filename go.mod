@@ -25,7 +25,7 @@ require (
 require github.com/libp2p/go-libp2p-swarm v0.11.0 // indirect
 
 require (
-	github.com/Rock-liyi/p2pdb v0.0.0-20220711143833-23a667524d1a
+	github.com/Rock-liyi/p2pdb v0.0.3
 	github.com/caarlos0/env/v6 v6.9.3
 	github.com/favframework/debug v0.0.0-20150708094948-5c7e73aafb21
 	github.com/ipld/go-ipld-prime v0.16.0
